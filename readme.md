@@ -3,17 +3,7 @@ MongoDB [Auto Init] Sharded Cluster with Docker Compose
 ## University of Tours adaptations
 Modified the project to run of scripts in a RO volume as we don't allow host folder mapping on our infrastructure.
 
-## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=minhhungit/mongodb-cluster-docker-compose&type=Date)](https://star-history.com/#minhhungit/mongodb-cluster-docker-compose&Date)
-
-
-### PSS Style (Primary -Secondary - Secondary)
-
-- Need PSA? Check [here](https://github.com/minhhungit/mongodb-cluster-docker-compose/tree/master/PSA)
-- If you need to set cluster with keyfile authentication, [check here](https://github.com/minhhungit/mongodb-cluster-docker-compose/tree/Feature/Auth/with-keyfile-auth)
-
----
 
 ## 📖 Table of Contents
 - [❓ Mongo Components?](#-mongo-components-)
@@ -25,33 +15,9 @@ Modified the project to run of scripts in a RO volume as we don't allow host fol
   - [Verify the status of the sharded cluster](#-verify-the-status-of-the-sharded-cluster-)
   - [Verify status of replica set for each shard](#-verify-status-of-replica-set-for-each-shard-)
   - [Check database status](#-check-database-status-)
-- [🔎 More commands](#-more-commands-)
-  - [Normal Startup](#-normal-startup-)
-  - [Resetting the Cluster](#-resetting-the-cluster-)
-  - [Clean up docker-compose](#-clean-up-docker-compose-)
-- [📺 Screenshot](#-screenshot-)
-- [👌 Donate ^^](#-donate--)
 - [📚 Refrences](#-refrences-)
 
-### WARNING (Windows & OS X) 
 
->The default Docker setup on Windows and OS X uses a VirtualBox VM to host the Docker daemon. 
->Unfortunately, the mechanism VirtualBox uses to share folders between the host system and 
->the Docker container is not compatible with the memory mapped files used by MongoDB 
->(see [vbox bug](https://www.virtualbox.org/ticket/819), [docs.mongodb.org](https://docs.mongodb.com/manual/administration/production->notes/#fsync-on-directories) 
->and related [jira.mongodb.org bug](https://jira.mongodb.org/browse/SERVER-8600)). 
->This means that it is not possible to run a MongoDB container with the data directory mapped to the host.
->
->&#8211; Docker Hub ([source here](https://github.com/docker-library/docs/blob/b78d49c9dffe5dd8b3ffd1db338c62b9e1fc3db8/mongo/content.md#where-to-store-data) 
->or [here](https://github.com/docker-library/mongo/issues/232#issuecomment-355423692))
----
-
-### Note: 
-
-If you want to modify config files, on Windows you might need to save those file with EOL Conversion Unix (LF) mode. You can use notepad++ to do that [Edit menu => EOL Conversion => Unix](https://github.com/minhhungit/mongodb-cluster-docker-compose/tree/master/assets/EOL-unix-mode.png)
-
-
----
 ## ❓ Mongo Components [🔝](#-table-of-contents)
 
 * Config Server (3 member replica set): `configsvr01`,`configsvr02`,`configsvr03`
@@ -417,39 +383,6 @@ docker exec -it shard-01-node-a bash -c "echo 'rs.printSlaveReplicationInfo()' |
 ```
 
 ---
-
-### ✦ Normal Startup [🔝](#-table-of-contents)
-The cluster only has to be initialized on the first run. 
-
-Subsequent startup can be achieved simply with `docker-compose up` or `docker-compose up -d`
-
-### ✦ Resetting the Cluster [🔝](#-table-of-contents)
-To remove all data and re-initialize the cluster, make sure the containers are stopped and then:
-
-```bash
-docker-compose rm
-```
-
-### ✦ Clean up docker-compose [🔝](#-table-of-contents)
-```bash
-docker-compose down -v --rmi all --remove-orphans
-```
-
-## 📺 Screenshot [🔝](#-table-of-contents)
-
-<img src="https://raw.githubusercontent.com/minhhungit/mongodb-cluster-docker-compose/master/images/demo.png" style="width: 100%;" />
-<img src="https://raw.githubusercontent.com/minhhungit/mongodb-cluster-docker-compose/master/images/demo-03.png" style="width: 100%;" />
-<img src="https://raw.githubusercontent.com/minhhungit/mongodb-cluster-docker-compose/master/images/demo-02.png" style="width: 100%;" />
-<img src="https://raw.githubusercontent.com/minhhungit/mongodb-cluster-docker-compose/master/images/replicaset-shard-01.png" style="width: 100%;" />
-
----
-
-## 👌 Donate ^^ [🔝](#-table-of-contents)
-**If you like my works and would like to support then you can buy me a coffee ☕️ anytime**
-
-<a href='https://ko-fi.com/I2I13GAGL' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi4.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a> 
-
-**I would appreciate it ❤️❤️❤️**
 
 ---
 ## 📚 Refrences [🔝](#-table-of-contents)
