@@ -1,5 +1,7 @@
 MongoDB [Auto Init] Sharded Cluster with Docker Compose
 =========================================
+## University of Tours adaptations
+Modified the project to run of scripts in a RO volume as we don't allow host folder mapping on our infrastructure.
 
 ## Star History
 
