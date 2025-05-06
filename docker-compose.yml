@@ -4,10 +4,12 @@ services:
     image: mongo:latest
     container_name: router-01
     ports:
-      - "27117:27017"
+      - "0:27017"
     restart: always
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_router01_db:/data/db
       - mongodb_cluster_router01_config:/data/configdb
     entrypoint: ["/scripts/entrypoint-route.sh"]
@@ -16,8 +18,10 @@ services:
   configsvr01:
     image: mongo:latest
     container_name: mongo-config-01
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_configsvr01_db:/data/db
       - mongodb_cluster_configsvr01_config:/data/configdb
     restart: always
@@ -27,8 +31,10 @@ services:
     image: mongo:latest
     container_name: mongo-config-02
     command: mongod --port 27017 --configsvr --replSet rs-config-server
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_configsvr02_db:/data/db
       - mongodb_cluster_configsvr02_config:/data/configdb
     restart: always
@@ -37,8 +43,10 @@ services:
     image: mongo:latest
     container_name: mongo-config-03
     command: mongod --port 27017 --configsvr --replSet rs-config-server
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_configsvr03_db:/data/db
       - mongodb_cluster_configsvr03_config:/data/configdb
     restart: always
@@ -47,8 +55,10 @@ services:
   shard01-a:
     image: mongo:latest
     container_name: shard-01-node-a
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard01_a_db:/data/db
       - mongodb_cluster_shard01_a_config:/data/configdb
     restart: always
@@ -58,8 +68,10 @@ services:
     image: mongo:latest
     container_name: shard-01-node-b
     command: mongod --port 27017 --shardsvr --replSet rs-shard-01
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard01_b_db:/data/db
       - mongodb_cluster_shard01_b_config:/data/configdb
     restart: always
@@ -68,8 +80,10 @@ services:
     image: mongo:latest
     container_name: shard-01-node-c
     command: mongod --port 27017 --shardsvr --replSet rs-shard-01
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard01_c_db:/data/db
       - mongodb_cluster_shard01_c_config:/data/configdb
     restart: always
@@ -77,8 +91,10 @@ services:
   shard02-a:
     image: mongo:latest
     container_name: shard-02-node-a
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard02_a_db:/data/db
       - mongodb_cluster_shard02_a_config:/data/configdb
     restart: always
@@ -88,8 +104,10 @@ services:
     image: mongo:latest
     container_name: shard-02-node-b
     command: mongod --port 27017 --shardsvr --replSet rs-shard-02
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard02_b_db:/data/db
       - mongodb_cluster_shard02_b_config:/data/configdb
     restart: always
@@ -98,8 +116,10 @@ services:
     image: mongo:latest
     container_name: shard-02-node-c
     command: mongod --port 27017 --shardsvr --replSet rs-shard-02
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard02_c_db:/data/db
       - mongodb_cluster_shard02_c_config:/data/configdb
     restart: always
@@ -107,8 +127,10 @@ services:
   shard03-a:
     image: mongo:latest
     container_name: shard-03-node-a
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard03_a_db:/data/db
       - mongodb_cluster_shard03_a_config:/data/configdb
     restart: always
@@ -118,8 +140,10 @@ services:
     image: mongo:latest
     container_name: shard-03-node-b
     command: mongod --port 27017 --shardsvr --replSet rs-shard-03
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard03_b_db:/data/db
       - mongodb_cluster_shard03_b_config:/data/configdb
     restart: always
@@ -128,13 +152,20 @@ services:
     image: mongo:latest
     container_name: shard-03-node-c
     command: mongod --port 27017 --shardsvr --replSet rs-shard-03
+    networks:
+      - mongo-clust-internal
     volumes:
-      - ./scripts:/scripts
+      - mongodb-clustered-scripts:/scripts
       - mongodb_cluster_shard03_c_db:/data/db
       - mongodb_cluster_shard03_c_config:/data/configdb
     restart: always
 
+networks:
+  mongo-clust-internal:
+    name: backend
 volumes:
+  mongodb-clustered-scripts:
+    external: True
   mongodb_cluster_router01_db:
   mongodb_cluster_router01_config:
   mongodb_cluster_configsvr01_db:
